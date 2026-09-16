@@ -95,8 +95,22 @@ class MainActivity : AppCompatActivity() {
         if (listoParaRegistrar){
             binding.textViewEstadoRegistro.text = getString(R.string.estado_listo)
         }else{
-            
+            binding.textViewEstadoRegistro.text = getString(R.string.estado_pendiente)
         }
 
     }
+
+    private fun  generarCodigoCorrelativo(): String {
+        return "SG-%04d".format(siguenteCodigo)
+    }
+
+    private fun contieneAlgunTermino(texto: String, terminos: List<String>): Boolean {
+        return terminos.any() { termino -> termino in texto}
+    }
+
+
+
+
+
+
 }
