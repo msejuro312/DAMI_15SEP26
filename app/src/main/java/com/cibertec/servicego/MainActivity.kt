@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             val tipoServicio = obtenerTipoServicio(descripcion)
             val modalidad = obtenerModalidad(descripcion)
             val costoEstimado = calcularCostoEstimado(tipoServicio,modalidad)
-            val tiempoEstimado = obtenerTiempoEstimado(tipoServicio,modalidad)
+            val tiempoEstimado = calcularTiempoEstimado(tipoServicio,modalidad)
 
             binding.textViewCostoEstimado.text = getString(R.string.costo_estimado_formato, "S/ ${"%.2f".format(costoEstimado)}")
             binding.textViewIndicadoresTecnicos.text = getString(R.string.indicadores_operativos_formato,"%.1f".format(tiempoEstimado),
@@ -164,7 +164,20 @@ class MainActivity : AppCompatActivity() {
         }
         val recargoPrioridad = if (modalidad == getString(R.string.modalidad_prioritaria)) 25.0 else 0.0
         return costoBase + recargoPrioridad
+    }
 
+    private fun calcularTiempoEstimado(tipoServicio: String, modalidad: String): Double {
+        //el tiempo base sigue la misma clasificacion del costo para mantener coherencia entre esfuerzo tecnico y estimacion mostrada
+
+        val tiempoBase = when (tipoServicio) {
+            getString(R.string.tipo_servicio_red) -> 2.0
+            getString(R.string.tipo_servicio_impresion) -> 1.5
+            getString(R.string.tipo_servicio_instalacion) -> 3.0
+            getString(R.string.tipo_servicio_mixto) -> 3.5
+            else -> 1.0
+        }
+        val recargoPrioridad = if (modalidad == getString(R.string.modalidad_prioritaria)) 0.5 else 0.0
+        return tiempoBase + recargoPrioridad
     }
 
 
